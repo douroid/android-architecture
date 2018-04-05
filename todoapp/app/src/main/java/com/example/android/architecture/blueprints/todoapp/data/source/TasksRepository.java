@@ -18,17 +18,14 @@ package com.example.android.architecture.blueprints.todoapp.data.source;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
-
 import com.example.android.architecture.blueprints.todoapp.data.Task;
 import com.google.common.base.Optional;
+import io.reactivex.Flowable;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import io.reactivex.Flowable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -53,16 +50,14 @@ public class TasksRepository implements TasksDataSource {
     /**
      * This variable has package local visibility so it can be accessed from tests.
      */
-    @VisibleForTesting
     @Nullable
-    Map<String, Task> mCachedTasks;
+    private Map<String, Task> mCachedTasks;
 
     /**
      * Marks the cache as invalid, to force an update the next time data is requested. This variable
      * has package local visibility so it can be accessed from tests.
      */
-    @VisibleForTesting
-    boolean mCacheIsDirty = false;
+    private boolean mCacheIsDirty = false;
 
     // Prevent direct instantiation.
     private TasksRepository(@NonNull TasksDataSource tasksRemoteDataSource,
