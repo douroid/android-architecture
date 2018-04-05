@@ -18,19 +18,16 @@ package com.example.android.architecture.blueprints.todoapp.tasks;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
-
 import com.example.android.architecture.blueprints.todoapp.addedittask.AddEditTaskActivity;
 import com.example.android.architecture.blueprints.todoapp.data.Task;
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource;
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository;
-import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingResource;
 import com.example.android.architecture.blueprints.todoapp.util.schedulers.BaseSchedulerProvider;
-
-import java.util.List;
-
 import io.reactivex.Flowable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -105,10 +102,6 @@ public class TasksPresenter implements TasksContract.Presenter {
             mTasksRepository.refreshTasks();
         }
 
-        // The network request might be handled in a different thread so make sure Espresso knows
-        // that the app is busy until the response is handled.
-        EspressoIdlingResource.increment(); // App is busy until further notice
-
         mCompositeDisposable.clear();
         Disposable disposable = mTasksRepository
                 .getTasks()
@@ -128,9 +121,7 @@ public class TasksPresenter implements TasksContract.Presenter {
                 .subscribeOn(mSchedulerProvider.io())
                 .observeOn(mSchedulerProvider.ui())
                 .doFinally(() -> {
-                    if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
-                        EspressoIdlingResource.decrement(); // Set app as idle.
-                    }
+                    // TODO
                 })
                 .subscribe(
                         // onNext

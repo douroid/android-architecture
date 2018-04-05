@@ -18,13 +18,10 @@ package com.example.android.architecture.blueprints.todoapp.statistics;
 
 import android.support.annotation.NonNull;
 import android.support.v4.util.Pair;
-
 import com.example.android.architecture.blueprints.todoapp.data.Task;
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository;
-import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingResource;
 import com.example.android.architecture.blueprints.todoapp.util.schedulers.BaseSchedulerProvider;
 import com.google.common.primitives.Ints;
-
 import io.reactivex.Flowable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -73,10 +70,6 @@ public class StatisticsPresenter implements StatisticsContract.Presenter {
     private void loadStatistics() {
         mStatisticsView.setProgressIndicator(true);
 
-        // The network request might be handled in a different thread so make sure Espresso knows
-        // that the app is busy until the response is handled.
-        EspressoIdlingResource.increment(); // App is busy until further notice
-
         Flowable<Task> tasks = mTasksRepository
                 .getTasks()
                 .flatMap(Flowable::fromIterable);
@@ -87,9 +80,7 @@ public class StatisticsPresenter implements StatisticsContract.Presenter {
                 .subscribeOn(mSchedulerProvider.computation())
                 .observeOn(mSchedulerProvider.ui())
                 .doFinally(() -> {
-                    if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
-                        EspressoIdlingResource.decrement(); // Set app as idle.
-                    }
+                    // TODO
                 })
                 .subscribe(
                         // onNext
