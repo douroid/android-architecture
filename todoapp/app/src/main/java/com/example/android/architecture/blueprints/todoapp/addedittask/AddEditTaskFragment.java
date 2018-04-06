@@ -27,7 +27,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.example.android.architecture.blueprints.todoapp.R;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -45,14 +44,6 @@ public class AddEditTaskFragment extends Fragment implements AddEditTaskContract
 
     private TextView mDescription;
 
-    public static AddEditTaskFragment newInstance() {
-        return new AddEditTaskFragment();
-    }
-
-    public AddEditTaskFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -68,24 +59,17 @@ public class AddEditTaskFragment extends Fragment implements AddEditTaskContract
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        FloatingActionButton fab =
-                (FloatingActionButton) getActivity().findViewById(R.id.fab_edit_task_done);
+        FloatingActionButton fab = getActivity().findViewById(R.id.fab_edit_task_done);
         fab.setImageResource(R.drawable.ic_done);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPresenter.saveTask(mTitle.getText().toString(), mDescription.getText().toString());
-            }
-        });
+        fab.setOnClickListener((view) -> mPresenter.saveTask(mTitle.getText().toString(), mDescription.getText().toString()));
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.addtask_frag, container, false);
-        mTitle = (TextView) root.findViewById(R.id.add_task_title);
-        mDescription = (TextView) root.findViewById(R.id.add_task_description);
+        mTitle = root.findViewById(R.id.add_task_title);
+        mDescription = root.findViewById(R.id.add_task_description);
         setHasOptionsMenu(true);
         return root;
     }

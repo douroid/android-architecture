@@ -24,7 +24,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.example.android.architecture.blueprints.todoapp.R;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -38,10 +37,6 @@ public class StatisticsFragment extends Fragment implements StatisticsContract.V
 
     private StatisticsContract.Presenter mPresenter;
 
-    public static StatisticsFragment newInstance() {
-        return new StatisticsFragment();
-    }
-
     @Override
     public void setPresenter(@NonNull StatisticsContract.Presenter presenter) {
         mPresenter = checkNotNull(presenter);
@@ -52,7 +47,7 @@ public class StatisticsFragment extends Fragment implements StatisticsContract.V
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.statistics_frag, container, false);
-        mStatisticsTV = (TextView) root.findViewById(R.id.statistics);
+        mStatisticsTV = root.findViewById(R.id.statistics);
         return root;
     }
 
