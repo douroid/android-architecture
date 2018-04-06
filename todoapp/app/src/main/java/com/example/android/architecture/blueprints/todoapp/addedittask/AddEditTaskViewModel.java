@@ -20,10 +20,8 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
-import android.support.annotation.Nullable;
-
-import com.example.android.architecture.blueprints.todoapp.SingleLiveEvent;
 import com.example.android.architecture.blueprints.todoapp.R;
+import com.example.android.architecture.blueprints.todoapp.SingleLiveEvent;
 import com.example.android.architecture.blueprints.todoapp.SnackbarMessage;
 import com.example.android.architecture.blueprints.todoapp.data.Task;
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource;
@@ -51,7 +49,6 @@ public class AddEditTaskViewModel extends AndroidViewModel implements TasksDataS
 
     private final TasksRepository mTasksRepository;
 
-    @Nullable
     private String mTaskId;
 
     private boolean mIsNewTask;

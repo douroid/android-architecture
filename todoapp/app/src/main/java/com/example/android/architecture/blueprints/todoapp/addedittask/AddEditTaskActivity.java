@@ -16,16 +16,13 @@
 
 package com.example.android.architecture.blueprints.todoapp.addedittask;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-
 import com.example.android.architecture.blueprints.todoapp.R;
 import com.example.android.architecture.blueprints.todoapp.ViewModelFactory;
 import com.example.android.architecture.blueprints.todoapp.util.ActivityUtils;
@@ -75,15 +72,10 @@ public class AddEditTaskActivity extends AppCompatActivity implements AddEditTas
         AddEditTaskViewModel viewModel = obtainViewModel(this);
 
         // The activity observes the navigation events in the ViewModel
-        viewModel.getTaskUpdatedEvent().observe(this, new Observer<Void>() {
-            @Override
-            public void onChanged(@Nullable Void _) {
-                AddEditTaskActivity.this.onTaskSaved();
-            }
-        });
+        viewModel.getTaskUpdatedEvent().observe(this, (Void) -> AddEditTaskActivity.this.onTaskSaved());
     }
 
-    public static AddEditTaskViewModel obtainViewModel(FragmentActivity activity) {
+    static AddEditTaskViewModel obtainViewModel(FragmentActivity activity) {
         // Use a Factory to inject dependencies into the ViewModel
         ViewModelFactory factory = ViewModelFactory.getInstance(activity.getApplication());
 
@@ -97,7 +89,7 @@ public class AddEditTaskActivity extends AppCompatActivity implements AddEditTas
                 .findFragmentById(R.id.contentFrame);
 
         if (addEditTaskFragment == null) {
-            addEditTaskFragment = AddEditTaskFragment.newInstance();
+            addEditTaskFragment = new AddEditTaskFragment();
 
             // Send the task ID to the fragment
             Bundle bundle = new Bundle();

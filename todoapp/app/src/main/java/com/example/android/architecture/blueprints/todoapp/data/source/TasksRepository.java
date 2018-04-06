@@ -50,7 +50,7 @@ public class TasksRepository implements TasksDataSource {
     /**
      * This variable has package local visibility so it can be accessed from tests.
      */
-    Map<String, Task> mCachedTasks;
+    private Map<String, Task> mCachedTasks;
 
     /**
      * Marks the cache as invalid, to force an update the next time data is requested. This variable

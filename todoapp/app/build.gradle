@@ -4,6 +4,12 @@ android {
     compileSdkVersion rootProject.compileSdkVersion
     buildToolsVersion rootProject.buildToolsVersion
 
+    compileOptions {
+        defaultJavaVersion  JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
+    }
+
     defaultConfig {
         applicationId "com.example.android.architecture.blueprints.todomvvmlive"
         minSdkVersion rootProject.minSdkVersion
@@ -52,6 +58,4 @@ dependencies {
     annotationProcessor "android.arch.lifecycle:compiler:$rootProject.archLifecycleVersion"
 
     implementation "com.android.support.test.espresso:espresso-idling-resource:$rootProject.espressoVersion"
-
-    implementation "com.google.code.findbugs:jsr305:2.0.1"
 }

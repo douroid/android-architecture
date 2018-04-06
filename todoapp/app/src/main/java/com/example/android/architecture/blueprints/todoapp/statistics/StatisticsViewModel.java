@@ -22,7 +22,6 @@ import android.content.Context;
 import android.databinding.Bindable;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
-
 import com.example.android.architecture.blueprints.todoapp.R;
 import com.example.android.architecture.blueprints.todoapp.data.Task;
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource;
@@ -42,7 +41,7 @@ public class StatisticsViewModel extends AndroidViewModel {
 
     public final ObservableBoolean dataLoading = new ObservableBoolean(false);
 
-    public final ObservableBoolean error = new ObservableBoolean(false);
+    private final ObservableBoolean error = new ObservableBoolean(false);
 
     public final ObservableField<String> numberOfActiveTasks = new ObservableField<>();
 
@@ -71,7 +70,7 @@ public class StatisticsViewModel extends AndroidViewModel {
         loadStatistics();
     }
 
-    public void loadStatistics() {
+    private void loadStatistics() {
         dataLoading.set(true);
 
         mTasksRepository.getTasks(new TasksDataSource.LoadTasksCallback() {

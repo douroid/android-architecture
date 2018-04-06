@@ -18,7 +18,6 @@ package com.example.android.architecture.blueprints.todoapp.data.source.remote;
 
 import android.os.Handler;
 import android.support.annotation.NonNull;
-
 import com.example.android.architecture.blueprints.todoapp.data.Task;
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource;
 import com.google.common.collect.Lists;
@@ -42,20 +41,6 @@ public class TasksRemoteDataSource implements TasksDataSource {
         TASKS_SERVICE_DATA = new LinkedHashMap<>(2);
         addTask("Build tower in Pisa", "Ground looks good, no foundation work required.", "0");
         addTask("Finish bridge in Tacoma", "Found awesome girders at half the cost!", "1");
-        addTask("Finish bridge in Tacoma", "Found awesome girders at half the cost!", "2");
-        addTask("Finish bridge in Tacoma", "Found awesome girders at half the cost!", "3");
-        addTask("Finish bridge in Tacoma", "Found awesome girders at half the cost!", "4");
-        addTask("Finish bridge in Tacoma", "Found awesome girders at half the cost!", "5");
-        addTask("Finish bridge in Tacoma", "Found awesome girders at half the cost!", "6");
-        addTask("Finish bridge in Tacoma", "Found awesome girders at half the cost!", "7");
-        addTask("Finish bridge in Tacoma", "Found awesome girders at half the cost!", "8");
-        addTask("Finish bridge in Tacoma", "Found awesome girders at half the cost!", "12");
-        addTask("Finish bridge in Tacoma", "Found awesome girders at half the cost!", "13");
-        addTask("Finish bridge in Tacoma", "Found awesome girders at half the cost!", "14");
-        addTask("Finish bridge in Tacoma", "Found awesome girders at half the cost!", "15");
-        addTask("Finish bridge in Tacoma", "Found awesome girders at half the cost!", "16");
-        addTask("Finish bridge in Tacoma", "Found awesome girders at half the cost!", "17");
-        addTask("Finish bridge in Tacoma", "Found awesome girders at half the cost!", "18");
     }
 
     public static TasksRemoteDataSource getInstance() {
@@ -66,7 +51,8 @@ public class TasksRemoteDataSource implements TasksDataSource {
     }
 
     // Prevent direct instantiation.
-    private TasksRemoteDataSource() {}
+    private TasksRemoteDataSource() {
+    }
 
     private static void addTask(String title, String description, String id) {
         Task newTask = new Task(title, description, id);
@@ -82,12 +68,8 @@ public class TasksRemoteDataSource implements TasksDataSource {
     public void getTasks(final @NonNull LoadTasksCallback callback) {
         // Simulate network by delaying the execution.
         Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                callback.onTasksLoaded(Lists.newArrayList(TASKS_SERVICE_DATA.values()));
-            }
-        }, SERVICE_LATENCY_IN_MILLIS);
+        handler.postDelayed(() -> callback.onTasksLoaded(Lists.newArrayList(TASKS_SERVICE_DATA.values())),
+                SERVICE_LATENCY_IN_MILLIS);
     }
 
     /**
@@ -101,12 +83,7 @@ public class TasksRemoteDataSource implements TasksDataSource {
 
         // Simulate network by delaying the execution.
         Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                callback.onTaskLoaded(task);
-            }
-        }, SERVICE_LATENCY_IN_MILLIS);
+        handler.postDelayed(() -> callback.onTaskLoaded(task), SERVICE_LATENCY_IN_MILLIS);
     }
 
     @Override

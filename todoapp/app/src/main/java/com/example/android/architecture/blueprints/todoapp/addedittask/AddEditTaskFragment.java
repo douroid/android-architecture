@@ -17,8 +17,8 @@
 package com.example.android.architecture.blueprints.todoapp.addedittask;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -26,9 +26,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.example.android.architecture.blueprints.todoapp.R;
-import com.example.android.architecture.blueprints.todoapp.SnackbarMessage;
 import com.example.android.architecture.blueprints.todoapp.databinding.AddtaskFragBinding;
 import com.example.android.architecture.blueprints.todoapp.util.SnackbarUtils;
 
@@ -42,14 +40,6 @@ public class AddEditTaskFragment extends Fragment {
     private AddEditTaskViewModel mViewModel;
 
     private AddtaskFragBinding mViewDataBinding;
-
-    public static AddEditTaskFragment newInstance() {
-        return new AddEditTaskFragment();
-    }
-
-    public AddEditTaskFragment() {
-        // Required empty public constructor
-    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -75,8 +65,7 @@ public class AddEditTaskFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View root = inflater.inflate(R.layout.addtask_frag, container, false);
         if (mViewDataBinding == null) {
             mViewDataBinding = AddtaskFragBinding.bind(root);
@@ -93,27 +82,17 @@ public class AddEditTaskFragment extends Fragment {
     }
 
     private void setupSnackbar() {
-        mViewModel.getSnackbarMessage().observe(this, new SnackbarMessage.SnackbarObserver() {
-            @Override
-            public void onNewMessage(@StringRes int snackbarMessageResourceId) {
-                SnackbarUtils.showSnackbar(getView(), getString(snackbarMessageResourceId));
-            }
-        });
+        mViewModel.getSnackbarMessage().observe(this, (int resId) -> SnackbarUtils.showSnackbar(getView(), getString(resId)));
     }
 
     private void setupFab() {
         FloatingActionButton fab = getActivity().findViewById(R.id.fab_edit_task_done);
         fab.setImageResource(R.drawable.ic_done);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mViewModel.saveTask();
-            }
-        });
+        fab.setOnClickListener((v) -> mViewModel.saveTask());
     }
 
     private void setupActionBar() {
-        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar == null) {
             return;
         }

@@ -22,9 +22,8 @@ import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-
-import com.example.android.architecture.blueprints.todoapp.SingleLiveEvent;
 import com.example.android.architecture.blueprints.todoapp.R;
+import com.example.android.architecture.blueprints.todoapp.SingleLiveEvent;
 import com.example.android.architecture.blueprints.todoapp.SnackbarMessage;
 import com.example.android.architecture.blueprints.todoapp.data.Task;
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource;
@@ -57,26 +56,26 @@ public class TaskDetailViewModel extends AndroidViewModel implements TasksDataSo
         mTasksRepository = tasksRepository;
     }
 
-    public void deleteTask() {
+    void deleteTask() {
         if (task.get() != null) {
             mTasksRepository.deleteTask(task.get().getId());
             mDeleteTaskCommand.call();
         }
     }
 
-    public void editTask() {
+    void editTask() {
         mEditTaskCommand.call();
     }
 
-    public SnackbarMessage getSnackbarMessage() {
+    SnackbarMessage getSnackbarMessage() {
         return mSnackbarText;
     }
 
-    public SingleLiveEvent<Void> getEditTaskCommand() {
+    SingleLiveEvent<Void> getEditTaskCommand() {
         return mEditTaskCommand;
     }
 
-    public SingleLiveEvent<Void> getDeleteTaskCommand() {
+    SingleLiveEvent<Void> getDeleteTaskCommand() {
         return mDeleteTaskCommand;
     }
 

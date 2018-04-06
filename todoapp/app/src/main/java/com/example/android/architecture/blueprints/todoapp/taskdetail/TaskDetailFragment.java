@@ -17,20 +17,13 @@
 package com.example.android.architecture.blueprints.todoapp.taskdetail;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.CheckBox;
-
 import com.example.android.architecture.blueprints.todoapp.R;
-import com.example.android.architecture.blueprints.todoapp.SnackbarMessage;
 import com.example.android.architecture.blueprints.todoapp.databinding.TaskdetailFragBinding;
 import com.example.android.architecture.blueprints.todoapp.util.SnackbarUtils;
 
@@ -40,13 +33,13 @@ import com.example.android.architecture.blueprints.todoapp.util.SnackbarUtils;
  */
 public class TaskDetailFragment extends Fragment {
 
-    public static final String ARGUMENT_TASK_ID = "TASK_ID";
+    private static final String ARGUMENT_TASK_ID = "TASK_ID";
 
-    public static final int REQUEST_EDIT_TASK = 1;
+    static final int REQUEST_EDIT_TASK = 1;
 
     private TaskDetailViewModel mViewModel;
 
-    public static TaskDetailFragment newInstance(String taskId) {
+    static TaskDetailFragment newInstance(String taskId) {
         Bundle arguments = new Bundle();
         arguments.putString(ARGUMENT_TASK_ID, taskId);
         TaskDetailFragment fragment = new TaskDetailFragment();
@@ -64,25 +57,13 @@ public class TaskDetailFragment extends Fragment {
     }
 
     private void setupSnackbar() {
-        mViewModel.getSnackbarMessage().observe(this, new SnackbarMessage.SnackbarObserver() {
-            @Override
-            public void onNewMessage(@StringRes int snackbarMessageResourceId) {
-                SnackbarUtils.showSnackbar(getView(), getString(snackbarMessageResourceId));
-
-            }
-        });
+        mViewModel.getSnackbarMessage().observe(this, (int resId) -> SnackbarUtils.showSnackbar(getView(), getString(resId)));
     }
 
     private void setupFab() {
-        FloatingActionButton fab =
-                (FloatingActionButton) getActivity().findViewById(R.id.fab_edit_task);
+        FloatingActionButton fab = getActivity().findViewById(R.id.fab_edit_task);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mViewModel.editTask();
-            }
-        });
+        fab.setOnClickListener((v) -> mViewModel.editTask());
     }
 
     @Override
@@ -93,8 +74,7 @@ public class TaskDetailFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.taskdetail_frag, container, false);
 
@@ -104,22 +84,11 @@ public class TaskDetailFragment extends Fragment {
 
         viewDataBinding.setViewmodel(mViewModel);
 
-        TaskDetailUserActionsListener actionsListener = getTaskDetailUserActionsListener();
-
-        viewDataBinding.setListener(actionsListener);
+        viewDataBinding.setListener((v) -> mViewModel.setCompleted(((CheckBox) v).isChecked()));
 
         setHasOptionsMenu(true);
 
         return view;
-    }
-
-    private TaskDetailUserActionsListener getTaskDetailUserActionsListener() {
-        return new TaskDetailUserActionsListener() {
-            @Override
-            public void onCompleteChanged(View v) {
-                mViewModel.setCompleted(((CheckBox) v).isChecked());
-            }
-        };
     }
 
     @Override
