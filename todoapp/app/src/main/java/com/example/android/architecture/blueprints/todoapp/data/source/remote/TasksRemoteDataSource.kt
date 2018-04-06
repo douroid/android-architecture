@@ -27,7 +27,7 @@ object TasksRemoteDataSource : TasksDataSource {
 
     private const val SERVICE_LATENCY_IN_MILLIS = 5000L
 
-    private var TASKS_SERVICE_DATA = LinkedHashMap<String, Task>(2)
+    private var TASKS_SERVICE_DATA = LinkedHashMap<String, Task>()
 
     init {
         addTask("Build tower in Pisa", "Ground looks good, no foundation work required.")
@@ -36,7 +36,7 @@ object TasksRemoteDataSource : TasksDataSource {
 
     private fun addTask(title: String, description: String) {
         val newTask = Task(title, description)
-        TASKS_SERVICE_DATA.put(newTask.id, newTask)
+        TASKS_SERVICE_DATA[newTask.id] = newTask
     }
 
     /**
@@ -71,14 +71,14 @@ object TasksRemoteDataSource : TasksDataSource {
     }
 
     override fun saveTask(task: Task) {
-        TASKS_SERVICE_DATA.put(task.id, task)
+        TASKS_SERVICE_DATA[task.id] = task
     }
 
     override fun completeTask(task: Task) {
         val completedTask = Task(task.title, task.description, task.id).apply {
             isCompleted = true
         }
-        TASKS_SERVICE_DATA.put(task.id, completedTask)
+        TASKS_SERVICE_DATA[task.id] = completedTask
     }
 
     override fun completeTask(taskId: String) {
@@ -88,7 +88,7 @@ object TasksRemoteDataSource : TasksDataSource {
 
     override fun activateTask(task: Task) {
         val activeTask = Task(task.title, task.description, task.id)
-        TASKS_SERVICE_DATA.put(task.id, activeTask)
+        TASKS_SERVICE_DATA[task.id] = activeTask
     }
 
     override fun activateTask(taskId: String) {

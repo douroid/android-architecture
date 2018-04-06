@@ -32,7 +32,7 @@ const val THREAD_COUNT = 3
  * webservice requests).
  */
 open class AppExecutors constructor(
-        val diskIO: Executor = DiskIOThreadExecutor(),
+        val diskIO: Executor = Executors.newSingleThreadExecutor(),
         val networkIO: Executor = Executors.newFixedThreadPool(THREAD_COUNT),
         val mainThread: Executor = MainThreadExecutor()
 ) {

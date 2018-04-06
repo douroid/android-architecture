@@ -21,12 +21,7 @@ import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.CheckBox
 import android.widget.TextView
 import com.example.android.architecture.blueprints.todoapp.R
@@ -42,7 +37,7 @@ class TaskDetailFragment : Fragment(), TaskDetailContract.View {
     private lateinit var detailTitle: TextView
     private lateinit var detailDescription: TextView
     private lateinit var detailCompleteStatus: CheckBox
-    
+
     override lateinit var presenter: TaskDetailContract.Presenter
 
     override var isActive: Boolean = false
@@ -67,8 +62,8 @@ class TaskDetailFragment : Fragment(), TaskDetailContract.View {
         }
 
         // Set up floating action button
-        activity.findViewById<FloatingActionButton>(R.id.fab_edit_task)
-                .setOnClickListener { presenter.editTask() }
+        activity?.findViewById<FloatingActionButton>(R.id.fab_edit_task)
+                ?.setOnClickListener { presenter.editTask() }
 
         return root
     }
@@ -125,7 +120,7 @@ class TaskDetailFragment : Fragment(), TaskDetailContract.View {
     }
 
     override fun showTaskDeleted() {
-        activity.finish()
+        activity?.finish()
     }
 
     override fun showTaskMarkedComplete() {
@@ -140,7 +135,7 @@ class TaskDetailFragment : Fragment(), TaskDetailContract.View {
         if (requestCode == REQUEST_EDIT_TASK) {
             // If the task was edited successfully, go back to the list.
             if (resultCode == Activity.RESULT_OK) {
-                activity.finish()
+                activity?.finish()
             }
         }
     }
@@ -159,9 +154,9 @@ class TaskDetailFragment : Fragment(), TaskDetailContract.View {
 
     companion object {
 
-        private val ARGUMENT_TASK_ID = "TASK_ID"
+        private const val ARGUMENT_TASK_ID = "TASK_ID"
 
-        private val REQUEST_EDIT_TASK = 1
+        private const val REQUEST_EDIT_TASK = 1
 
         fun newInstance(taskId: String?) =
                 TaskDetailFragment().apply {

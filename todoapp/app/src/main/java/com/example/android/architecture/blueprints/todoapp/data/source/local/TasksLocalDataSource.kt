@@ -15,7 +15,6 @@
  */
 package com.example.android.architecture.blueprints.todoapp.data.source.local
 
-import android.support.annotation.VisibleForTesting
 import com.example.android.architecture.blueprints.todoapp.data.Task
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource
 import com.example.android.architecture.blueprints.todoapp.util.AppExecutors
@@ -25,8 +24,8 @@ import com.example.android.architecture.blueprints.todoapp.util.AppExecutors
  * Concrete implementation of a data source as a db.
  */
 class TasksLocalDataSource private constructor(
-        val appExecutors: AppExecutors,
-        val tasksDao: TasksDao
+        private val appExecutors: AppExecutors,
+        private val tasksDao: TasksDao
 ) : TasksDataSource {
 
     /**
@@ -114,11 +113,6 @@ class TasksLocalDataSource private constructor(
                 }
             }
             return INSTANCE!!
-        }
-
-        @VisibleForTesting
-        fun clearInstance() {
-            INSTANCE = null
         }
     }
 }

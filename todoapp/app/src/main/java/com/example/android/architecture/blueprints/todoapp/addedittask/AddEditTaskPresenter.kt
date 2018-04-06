@@ -32,8 +32,8 @@ import com.example.android.architecture.blueprints.todoapp.data.source.TasksData
  */
 class AddEditTaskPresenter(
         private val taskId: String?,
-        val tasksRepository: TasksDataSource,
-        val addTaskView: AddEditTaskContract.View,
+        private val tasksRepository: TasksDataSource,
+        private val addTaskView: AddEditTaskContract.View,
         override var isDataMissing: Boolean
 ) : AddEditTaskContract.Presenter, TasksDataSource.GetTaskCallback {
 

@@ -48,7 +48,7 @@ class AddEditTaskFragment : Fragment(), AddEditTaskContract.View {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        with(activity.findViewById<FloatingActionButton>(R.id.fab_edit_task_done)) {
+        with(activity!!.findViewById<FloatingActionButton>(R.id.fab_edit_task_done)) {
             setImageResource(R.drawable.ic_done)
             setOnClickListener {
                 presenter.saveTask(title.text.toString(), description.text.toString())
@@ -57,7 +57,7 @@ class AddEditTaskFragment : Fragment(), AddEditTaskContract.View {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.addtask_frag, container, false)
         with(root) {
             title = findViewById(R.id.add_task_title)
@@ -72,7 +72,7 @@ class AddEditTaskFragment : Fragment(), AddEditTaskContract.View {
     }
 
     override fun showTasksList() {
-        with(activity) {
+        with(activity!!) {
             setResult(Activity.RESULT_OK)
             finish()
         }
