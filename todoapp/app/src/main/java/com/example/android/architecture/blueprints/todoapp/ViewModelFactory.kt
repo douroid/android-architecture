@@ -19,8 +19,6 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
-import android.support.annotation.VisibleForTesting
-
 import com.example.android.architecture.blueprints.todoapp.addedittask.AddEditTaskViewModel
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository
 import com.example.android.architecture.blueprints.todoapp.statistics.StatisticsViewModel
@@ -58,7 +56,8 @@ class ViewModelFactory private constructor(
     companion object {
 
         @SuppressLint("StaticFieldLeak")
-        @Volatile private var INSTANCE: ViewModelFactory? = null
+        @Volatile
+        private var INSTANCE: ViewModelFactory? = null
 
         fun getInstance(application: Application) =
                 INSTANCE ?: synchronized(ViewModelFactory::class.java) {
@@ -66,10 +65,5 @@ class ViewModelFactory private constructor(
                             Injection.provideTasksRepository(application.applicationContext))
                             .also { INSTANCE = it }
                 }
-
-
-        @VisibleForTesting fun destroyInstance() {
-            INSTANCE = null
-        }
     }
 }

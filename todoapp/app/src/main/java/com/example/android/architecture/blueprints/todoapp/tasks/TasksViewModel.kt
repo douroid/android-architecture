@@ -18,13 +18,9 @@ package com.example.android.architecture.blueprints.todoapp.tasks
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.content.Context
-import android.databinding.BaseObservable
-import android.databinding.Bindable
-import android.databinding.ObservableArrayList
-import android.databinding.ObservableBoolean
-import android.databinding.ObservableField
-import android.databinding.ObservableList
+import android.databinding.*
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.support.annotation.DrawableRes
 import android.support.annotation.StringRes
 import com.example.android.architecture.blueprints.todoapp.R
@@ -84,12 +80,8 @@ class TasksViewModel(
 
     /**
      * Sets the current task filtering type.
-
-     * @param requestType Can be [TasksFilterType.ALL_TASKS],
-     * *                    [TasksFilterType.COMPLETED_TASKS], or
-     * *                    [TasksFilterType.ACTIVE_TASKS]
      */
-    fun updateFiltering() {
+    private fun updateFiltering() {
         // Depending on the filter type, set the filtering label, icon drawables, etc.
         when (currentFiltering) {
             TasksFilterType.ALL_TASKS -> {
@@ -108,11 +100,15 @@ class TasksViewModel(
     }
 
     private fun setFilter(@StringRes filteringLabelString: Int, @StringRes noTasksLabelString: Int,
-            @DrawableRes noTaskIconDrawable: Int, tasksAddVisible: Boolean) {
+                          @DrawableRes noTaskIconDrawable: Int, tasksAddVisible: Boolean) {
         with(context.resources) {
             currentFilteringLabel.set(context.getString(filteringLabelString))
             noTasksLabel.set(getString(noTasksLabelString))
-            noTaskIconRes.set(getDrawable(noTaskIconDrawable))
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+                noTaskIconRes.set(getDrawable(noTaskIconDrawable, context.theme))
+            } else {
+                noTaskIconRes.set(getDrawable(noTaskIconDrawable))
+            }
             tasksAddViewVisible.set(tasksAddVisible)
         }
     }
@@ -178,16 +174,13 @@ class TasksViewModel(
 
         tasksRepository.getTasks(object : TasksDataSource.LoadTasksCallback {
             override fun onTasksLoaded(tasks: List<Task>) {
-                val tasksToShow: List<Task>
-
-                // We filter the tasks based on the requestType
-                when (currentFiltering) {
+                val tasksToShow: List<Task> = when (currentFiltering) {
                     TasksFilterType.ALL_TASKS ->
-                        tasksToShow = tasks
+                        tasks
                     TasksFilterType.ACTIVE_TASKS ->
-                        tasksToShow = tasks.filter { it.isActive }
+                        tasks.filter { it.isActive }
                     TasksFilterType.COMPLETED_TASKS ->
-                        tasksToShow = tasks.filter { it.isCompleted }
+                        tasks.filter { it.isCompleted }
                 }
 
                 if (showLoadingUI) {
