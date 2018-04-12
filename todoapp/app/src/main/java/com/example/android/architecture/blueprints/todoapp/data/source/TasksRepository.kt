@@ -16,8 +16,7 @@
 package com.example.android.architecture.blueprints.todoapp.data.source
 
 import com.example.android.architecture.blueprints.todoapp.data.Task
-import java.util.ArrayList
-import java.util.LinkedHashMap
+import java.util.*
 
 /**
  * Concrete implementation to load tasks from the data sources into a cache.
@@ -28,20 +27,19 @@ import java.util.LinkedHashMap
  * exist or is empty.
  */
 class TasksRepository(
-        val tasksRemoteDataSource: TasksDataSource,
-        val tasksLocalDataSource: TasksDataSource
-) : TasksDataSource {
+        private val tasksRemoteDataSource: TasksDataSource,
+        private val tasksLocalDataSource: TasksDataSource) : TasksDataSource {
 
     /**
      * This variable has public visibility so it can be accessed from tests.
      */
-    var cachedTasks: LinkedHashMap<String, Task> = LinkedHashMap()
+    private var cachedTasks: LinkedHashMap<String, Task> = LinkedHashMap()
 
     /**
      * Marks the cache as invalid, to force an update the next time data is requested. This variable
      * has package local visibility so it can be accessed from tests.
      */
-    var cacheIsDirty = false
+    private var cacheIsDirty = false
 
     /**
      * Gets tasks from cache, local data source (SQLite) or remote data source, whichever is
@@ -219,7 +217,7 @@ class TasksRepository(
         val cachedTask = Task(task.title, task.description, task.id).apply {
             isCompleted = task.isCompleted
         }
-        cachedTasks.put(cachedTask.id, cachedTask)
+        cachedTasks[cachedTask.id] = cachedTask
         perform(cachedTask)
     }
 
@@ -236,18 +234,11 @@ class TasksRepository(
          * *
          * @return the [TasksRepository] instance
          */
-        @JvmStatic fun getInstance(tasksRemoteDataSource: TasksDataSource,
-                tasksLocalDataSource: TasksDataSource): TasksRepository {
+        @JvmStatic
+        fun getInstance(tasksRemoteDataSource: TasksDataSource,
+                        tasksLocalDataSource: TasksDataSource): TasksRepository {
             return INSTANCE ?: TasksRepository(tasksRemoteDataSource, tasksLocalDataSource)
                     .apply { INSTANCE = this }
-        }
-
-        /**
-         * Used to force [getInstance] to create a new instance
-         * next time it's called.
-         */
-        @JvmStatic fun destroyInstance() {
-            INSTANCE = null
         }
     }
 }
